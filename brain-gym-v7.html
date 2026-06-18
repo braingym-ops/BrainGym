@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRAIN GYM — スマホをやめろとは言わない。</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;700&family=Noto+Sans+JP:wght@200;300;400;500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:    #13120d;
+  --ink2:   #1e1d16;
+  --ink3:   #2c2b20;
+  --paper:  #f0ead8;
+  --paper2: #e6dfc9;
+  --paper3: #d8d0b8;
+  --linen:  #f7f3eb;
+  --moss:   #28361e;
+  --moss2:  #374a28;
+  --mossp:  #8fa87a;
+  --ember:  #9e3e18;
+  --ember2: #b85530;
+  --ember3: #d48858;
+  --ember4: #ecc090;
+  --dust:   #847c6c;
+  --dustl:  #b4ac9c;
+}
+
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  font-weight:300;
+  background:var(--linen);
+  color:var(--ink);
+  overflow-x:hidden;
+}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  padding:0 60px;height:68px;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:background 0.4s, border-color 0.4s;
+}
+nav.scrolled{
+  background:rgba(247,243,235,0.96);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(19,18,13,0.07);
+}
+.nav-logo{
+  font-family:'EB Garamond',serif;
+  font-size:13px;letter-spacing:0.38em;
+  color:var(--paper);transition:color 0.4s;
+  text-transform:uppercase;
+}
+nav.scrolled .nav-logo{color:var(--ink)}
+.nav-r{display:flex;align-items:center;gap:44px}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(240,234,216,0.55);text-decoration:none;transition:color 0.3s;
+}
+nav.scrolled .nav-links a{color:var(--dust)}
+.nav-links a:hover{color:var(--paper)!important}
+nav.scrolled .nav-links a:hover{color:var(--ink)!important}
+.nav-apply{
+  font-size:10px;letter-spacing:0.2em;text-transform:uppercase;
+  padding:9px 22px;
+  border:1px solid rgba(240,234,216,0.4);
+  color:var(--paper);text-decoration:none;transition:all 0.3s;
+}
+nav.scrolled .nav-apply{border-color:var(--ink);color:var(--ink)}
+.nav-apply:hover{background:var(--ember);border-color:var(--ember);color:var(--paper)!important}
+
+/* HERO */
+.hero{
+  position:relative;
+  height:100vh;min-height:700px;
+  display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.hero-img{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1511497584788-876760111969?w=1800&q=85');
+  background-size:cover;background-position:center 45%;
+  transform:scale(1.06);
+  animation:hzoom 22s ease-out forwards;
+  will-change:transform;
+}
+@keyframes hzoom{to{transform:scale(1.0)}}
+.hero-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,
+    rgba(19,18,13,0.55) 0%,rgba(19,18,13,0.15) 35%,
+    rgba(19,18,13,0.4) 65%,rgba(19,18,13,0.92) 100%);
+}
+.hero-grain{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events:none;opacity:0.6;
+}
+.hero-body{
+  position:relative;z-index:2;flex:1;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 60px 90px;max-width:1200px;width:100%;
+}
+.hero-eyebrow{
+  font-family:'EB Garamond',serif;
+  font-size:11px;letter-spacing:0.5em;text-transform:uppercase;
+  color:var(--ember3);
+  display:flex;align-items:center;gap:18px;
+  margin-bottom:32px;
+  opacity:0;animation:fu 1.1s ease 0.3s forwards;
+}
+.hero-eyebrow::before{content:'';width:36px;height:1px;background:var(--ember3);opacity:0.7}
+
+.hero-h1{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(52px,7.5vw,110px);
+  font-weight:400;line-height:1.1;
+  color:var(--paper);letter-spacing:-0.01em;
+  opacity:0;animation:fu 1.1s ease 0.5s forwards;
+}
+.hero-h1 em{font-style:normal;color:var(--ember3);display:block}
+
+.hero-rule{
+  width:100%;height:1px;
+  background:linear-gradient(to right, rgba(240,234,216,0.15), transparent);
+  margin:40px 0;
+  opacity:0;animation:fu 1.1s ease 0.7s forwards;
+}
+
+.hero-bottom-row{
+  display:grid;grid-template-columns:1fr auto;
+  gap:60px;align-items:end;
+  opacity:0;animation:fu 1.1s ease 0.9s forwards;
+}
+.hero-sub{
+  font-size:clamp(13px,1.3vw,16px);line-height:2.0;
+  color:rgba(240,234,216,0.55);letter-spacing:0.06em;
+  max-width:480px;
+}
+.hero-sub strong{color:rgba(240,234,216,0.85);font-weight:400}
+
+.hero-actions{
+  display:flex;flex-direction:column;
+  align-items:flex-end;gap:16px;flex-shrink:0;
+}
+.btn-h-main{
+  display:inline-flex;align-items:center;gap:16px;
+  padding:17px 44px;
+  background:var(--ember);color:var(--paper);
+  font-family:'EB Garamond',serif;font-size:14px;
+  letter-spacing:0.22em;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--ember);
+  transition:all 0.35s;white-space:nowrap;
+}
+.btn-h-main:hover{background:transparent;color:var(--ember4);border-color:var(--ember4);gap:24px}
+.hero-free-note{
+  font-family:'EB Garamond',serif;font-size:12px;font-style:italic;
+  color:rgba(240,234,216,0.3);letter-spacing:0.06em;white-space:nowrap;
+}
+
+.scroll-ind{
+  position:absolute;bottom:36px;right:60px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  z-index:2;opacity:0;animation:fu 1.1s ease 1.4s forwards;
+}
+.scroll-ind-line{
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,rgba(240,234,216,0.4),transparent);
+  animation:scrollpulse 2s ease-in-out infinite;
+}
+@keyframes scrollpulse{
+  0%,100%{opacity:0.4;transform:scaleY(1)}
+  50%{opacity:0.9;transform:scaleY(1.15)}
+}
+.scroll-ind-label{
+  font-family:'EB Garamond',serif;font-size:9px;
+  letter-spacing:0.4em;text-transform:uppercase;
+  color:rgba(240,234,216,0.3);writing-mode:vertical-rl;
+}
+@keyframes fu{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* TARGET STRIP — NEW: clear positioning */
+.s-target{
+  background:var(--ink);
+  padding:36px 0;
+  border-top:1px solid rgba(240,234,216,0.05);
+}
+.target-row{
+  display:flex;justify-content:center;gap:40px;
+  flex-wrap:wrap;align-items:center;
+}
+.target-label{
+  font-family:'EB Garamond',serif;
+  font-size:10px;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--ember3);
+}
+.target-tag{
+  font-size:12px;letter-spacing:0.1em;
+  color:rgba(240,234,216,0.55);
+  display:flex;align-items:center;gap:14px;
+}
+.target-tag::before{content:'•';color:var(--ember2);opacity:0.6}
+
+/* TICKER */
+.ticker{
+  background:var(--ember);padding:14px 0;overflow:hidden;
+  border-top:1px solid rgba(255,255,255,0.08);
+}
+.ticker-track{
+  display:flex;gap:0;
+  animation:tick 24s linear infinite;width:max-content;
+}
+@keyframes tick{to{transform:translateX(-50%)}}
+.tick-item{
+  display:flex;align-items:center;gap:10px;padding:0 40px;
+  font-family:'EB Garamond',serif;
+  font-size:13px;letter-spacing:0.18em;
+  color:rgba(240,234,216,0.9);white-space:nowrap;
+}
+.tick-dot{width:3px;height:3px;border-radius:50%;background:rgba(240,234,216,0.4);flex-shrink:0}
+
+/* SHARED */
+.si{max-width:1100px;margin:0 auto;padding:0 60px}
+
+.sl{
+  font-family:'EB Garamond',serif;
+  font-size:10px;letter-spacing:0.48em;text-transform:uppercase;
+  color:var(--ember2);
+  display:flex;align-items:center;gap:18px;margin-bottom:72px;
+}
+.sl::before{content:'';width:28px;height:1px;background:var(--ember2);opacity:0.55}
+
+.jr{
+  opacity:0;transform:translateY(22px);
+  transition:opacity 0.95s cubic-bezier(0.22,1,0.36,1),
+             transform 0.95s cubic-bezier(0.22,1,0.36,1);
+}
+.jr.on{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}
+.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+.d5{transition-delay:.40s}.d6{transition-delay:.48s}
+
+/* HOOK */
+.s-hook{background:var(--paper);padding:0}
+.hook-split{display:grid;grid-template-columns:1fr 1fr;min-height:85vh}
+.hook-photo{position:relative;overflow:hidden}
+.hook-photo img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(0.72) saturate(0.75);
+  transition:transform 1s ease;display:block;
+}
+.hook-photo:hover img{transform:scale(1.04)}
+.hook-photo::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(40,54,30,0.3) 0%,transparent 60%);
+}
+.hook-content{
+  padding:100px 80px;
+  display:flex;flex-direction:column;justify-content:center;
+  background:var(--paper);
+}
+.hook-content h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(28px,3.2vw,48px);
+  font-weight:400;line-height:1.5;
+  color:var(--ink);letter-spacing:0.02em;margin-bottom:36px;
+}
+.hook-content h2 em{font-style:normal;color:var(--ember)}
+.hook-content p{
+  font-size:14px;line-height:2.4;
+  color:var(--dust);letter-spacing:0.05em;margin-bottom:16px;
+}
+.hook-content p strong{color:var(--ink);font-weight:400}
+
+.ba{width:100%;border-collapse:collapse;margin-top:40px}
+.ba th{
+  font-family:'EB Garamond',serif;
+  font-size:10px;letter-spacing:0.3em;text-transform:uppercase;
+  padding:0 16px 14px 0;font-weight:400;text-align:left;
+}
+.ba th.bad{color:var(--ember)}
+.ba th.good{color:var(--moss2)}
+.ba td{
+  padding:16px 16px 16px 0;
+  font-size:13px;line-height:1.8;
+  color:var(--dust);letter-spacing:0.04em;
+  border-top:1px solid var(--paper3);
+  vertical-align:top;width:50%;
+}
+.ba td.bad-c::before{content:'— ';color:rgba(158,62,24,0.45)}
+.ba td.good-c{color:var(--ink)}
+.ba td.good-c::before{content:'＋ ';color:var(--moss2)}
+
+/* STATS */
+.s-stats{background:var(--ink2);padding:80px 0}
+.stats-row{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(240,234,216,0.05);
+}
+.stat{
+  padding:52px 56px;background:var(--ink2);
+  border-right:1px solid rgba(240,234,216,0.05);
+}
+.stat:last-child{border-right:none}
+.stat-n{
+  font-family:'EB Garamond',serif;
+  font-size:clamp(42px,4.5vw,64px);
+  font-weight:400;color:var(--paper);
+  line-height:1;margin-bottom:10px;letter-spacing:-0.01em;
+}
+.stat-n sup{font-size:0.4em;vertical-align:super;letter-spacing:0;color:var(--ember3)}
+.stat-label{
+  font-size:13px;line-height:1.9;
+  color:rgba(240,234,216,0.4);
+  letter-spacing:0.06em;margin-bottom:8px;
+}
+.stat-src{
+  font-family:'EB Garamond',serif;font-style:italic;
+  font-size:11px;color:rgba(240,234,216,0.18);letter-spacing:0.06em;
+}
+
+/* BENEFITS */
+.s-benefits{background:var(--linen);padding:140px 0}
+.ben-header{
+  display:grid;grid-template-columns:5fr 6fr;
+  gap:80px;align-items:end;margin-bottom:88px;
+}
+.ben-header h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(28px,3.5vw,52px);
+  font-weight:400;line-height:1.45;
+  color:var(--ink);letter-spacing:0.02em;
+}
+.ben-header p{
+  font-size:14px;line-height:2.4;
+  color:var(--dust);letter-spacing:0.05em;
+}
+.bens{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--paper3);
+}
+.ben{
+  background:var(--linen);padding:52px 40px;
+  border-top:2px solid transparent;
+  transition:border-color 0.35s,background 0.35s;
+  cursor:default;
+}
+.ben:hover{border-color:var(--ember);background:var(--paper)}
+.ben-n{
+  font-family:'EB Garamond',serif;
+  font-size:44px;font-weight:400;
+  color:var(--paper3);line-height:1;margin-bottom:22px;
+  transition:color 0.35s;
+}
+.ben:hover .ben-n{color:var(--ember4)}
+.ben h3{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:18px;font-weight:400;
+  color:var(--ink);letter-spacing:0.04em;
+  margin-bottom:14px;line-height:1.6;
+}
+.ben p{
+  font-size:13px;line-height:2.2;
+  color:var(--dust);letter-spacing:0.04em;margin-bottom:24px;
+}
+.ben-voice{
+  font-family:'EB Garamond',serif;
+  font-size:12px;font-style:italic;
+  color:var(--ember2);letter-spacing:0.04em;line-height:1.8;
+  border-left:2px solid var(--ember2);
+  padding-left:14px;opacity:0.75;
+}
+
+/* PHOTO MOSAIC */
+.s-mosaic{
+  display:grid;grid-template-columns:2fr 1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  height:70vh;gap:2px;background:var(--ink);
+}
+.mosaic-item{overflow:hidden;position:relative;cursor:pointer}
+.mosaic-item img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(0.65) saturate(0.7);
+  transition:transform 0.9s ease, filter 0.5s ease;display:block;
+}
+.mosaic-item:hover img{
+  transform:scale(1.07);filter:brightness(0.8) saturate(0.85);
+}
+.mosaic-item.tall{grid-row:span 2}
+.mosaic-label{
+  position:absolute;bottom:20px;left:20px;
+  font-family:'EB Garamond',serif;font-size:11px;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:rgba(240,234,216,0.5);pointer-events:none;
+}
+
+/* COMMUNITY — NEW */
+.s-community{
+  background:var(--paper);padding:140px 0;
+  position:relative;overflow:hidden;
+}
+.com-grid{
+  display:grid;grid-template-columns:5fr 6fr;
+  gap:90px;align-items:center;
+}
+.com-text h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(28px,3.4vw,50px);
+  font-weight:400;line-height:1.5;
+  color:var(--ink);letter-spacing:0.02em;
+  margin-bottom:32px;
+}
+.com-text h2 em{font-style:normal;color:var(--ember)}
+.com-text p{
+  font-size:14px;line-height:2.4;
+  color:var(--dust);letter-spacing:0.05em;
+  margin-bottom:20px;
+}
+.com-text p strong{color:var(--ink);font-weight:400}
+.com-stats{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:var(--paper3);
+  margin-top:8px;
+}
+.com-stat{
+  background:var(--linen);padding:32px 28px;
+}
+.cs-n{
+  font-family:'EB Garamond',serif;
+  font-size:42px;font-weight:400;
+  color:var(--ember);line-height:1;margin-bottom:6px;
+  letter-spacing:-0.01em;
+}
+.cs-label{
+  font-size:11px;letter-spacing:0.08em;
+  color:var(--dust);line-height:1.7;
+}
+.com-photo{
+  position:relative;overflow:hidden;
+  aspect-ratio:4/5;
+}
+.com-photo img{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(0.85) saturate(0.85);
+  transition:transform 0.9s;display:block;
+}
+.com-photo:hover img{transform:scale(1.04)}
+
+/* FOUNDER — NEW */
+.s-founder{
+  background:var(--ink);padding:120px 0;
+  position:relative;overflow:hidden;
+}
+.s-founder::before{
+  content:'';position:absolute;
+  right:-10vw;top:50%;
+  transform:translateY(-50%);
+  width:50vw;height:50vw;border-radius:50%;
+  border:1px solid rgba(240,234,216,0.04);
+}
+.founder-wrap{
+  display:grid;grid-template-columns:auto 1fr;
+  gap:80px;align-items:center;
+  position:relative;z-index:2;
+}
+.founder-photo{
+  width:280px;height:340px;flex-shrink:0;
+  overflow:hidden;background:var(--ink2);
+  position:relative;
+}
+.founder-photo img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(0.7) contrast(1.05);display:block;
+}
+.founder-placeholder{
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(240,234,216,0.02) 0,
+      rgba(240,234,216,0.02) 14px,
+      rgba(240,234,216,0.04) 14px,
+      rgba(240,234,216,0.04) 28px
+    );
+  border:1px dashed rgba(240,234,216,0.15);
+}
+.ph-icon{
+  font-family:'EB Garamond',serif;
+  font-size:42px;color:rgba(240,234,216,0.18);
+  font-weight:300;line-height:1;
+}
+.ph-label{
+  font-family:'EB Garamond',serif;
+  font-size:11px;letter-spacing:0.4em;text-transform:uppercase;
+  color:rgba(240,234,216,0.3);
+}
+.ph-note{
+  font-size:10px;letter-spacing:0.06em;
+  color:rgba(240,234,216,0.18);
+  text-align:center;line-height:1.7;margin-top:6px;
+}
+.founder-card{
+  margin-top:36px;
+  padding:28px 32px;
+  background:rgba(240,234,216,0.04);
+  border-left:2px solid var(--ember2);
+}
+.fc-name{
+  display:flex;flex-direction:column;gap:4px;
+  margin-bottom:14px;
+}
+.fc-jp{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:16px;font-weight:400;
+  color:var(--paper);letter-spacing:0.04em;
+}
+.fc-role{
+  font-family:'EB Garamond',serif;
+  font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(240,234,216,0.4);
+}
+.fc-message{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:14px;font-style:italic;font-weight:400;
+  line-height:1.9;color:rgba(240,234,216,0.55)!important;
+  letter-spacing:0.04em;margin:0!important;
+}
+.founder-text .sl{margin-bottom:32px}
+.founder-text h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(24px,2.8vw,38px);
+  font-weight:400;line-height:1.6;
+  color:var(--paper);letter-spacing:0.02em;
+  margin-bottom:24px;
+}
+.founder-text h2 em{font-style:normal;color:var(--ember3)}
+.founder-text p{
+  font-size:14px;line-height:2.3;
+  color:rgba(240,234,216,0.45);
+  letter-spacing:0.05em;margin-bottom:20px;
+}
+.founder-meta{
+  display:flex;gap:32px;margin-top:32px;
+  padding-top:28px;
+  border-top:1px solid rgba(240,234,216,0.07);
+}
+.fmeta-item{
+  font-family:'EB Garamond',serif;
+  font-size:11px;letter-spacing:0.18em;
+  color:rgba(240,234,216,0.3);text-transform:uppercase;
+}
+.fmeta-item strong{
+  display:block;color:var(--paper);font-weight:400;
+  font-size:14px;letter-spacing:0.04em;margin-bottom:4px;
+  font-family:'Shippori Mincho B1',serif;
+}
+
+/* FREE */
+.s-free{background:var(--ink);padding:120px 0}
+.free-wrap{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:100px;align-items:center;
+}
+.free-txt .sl{margin-bottom:40px}
+.free-txt h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(28px,3.5vw,50px);
+  font-weight:400;line-height:1.5;
+  color:var(--paper);letter-spacing:0.02em;margin-bottom:24px;
+}
+.free-txt h2 em{font-style:normal;color:var(--ember3)}
+.free-txt p{
+  font-size:14px;line-height:2.4;
+  color:rgba(240,234,216,0.38);
+  letter-spacing:0.05em;
+}
+.free-box{
+  border:1px solid rgba(240,234,216,0.08);
+  padding:64px 56px;text-align:center;
+  position:relative;background:rgba(240,234,216,0.02);
+}
+.free-box::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(to right, var(--ember), transparent);
+}
+.fb-lbl{
+  font-family:'EB Garamond',serif;
+  font-size:10px;letter-spacing:0.45em;text-transform:uppercase;
+  color:var(--ember3);display:block;margin-bottom:12px;
+}
+.fb-num{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:72px;font-weight:700;
+  color:var(--paper);line-height:1;margin-bottom:14px;
+  letter-spacing:-0.02em;
+}
+.fb-sub{
+  font-size:12px;letter-spacing:0.1em;
+  color:rgba(240,234,216,0.22);line-height:1.9;
+}
+
+/* SESSIONS */
+.s-sessions{background:var(--paper2);padding:140px 0}
+.sess-header{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:60px;align-items:end;margin-bottom:80px;
+}
+.sess-header h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(26px,3.2vw,46px);
+  font-weight:400;color:var(--ink);
+  letter-spacing:0.02em;line-height:1.5;
+}
+.sess-header p{
+  font-size:14px;line-height:2.4;
+  color:var(--dust);letter-spacing:0.05em;
+}
+.sess-list{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;background:var(--paper3);
+}
+.sess{
+  background:var(--linen);padding:52px 40px;
+  border-top:2px solid transparent;
+  transition:border-color 0.35s,background 0.35s;
+}
+.sess.featured{border-color:var(--ember)}
+.sess:not(.featured):hover{border-color:var(--dustl)}
+.sess-tag{
+  font-family:'EB Garamond',serif;
+  font-size:10px;letter-spacing:0.35em;text-transform:uppercase;
+  color:var(--ember);margin-bottom:22px;
+  display:flex;align-items:center;gap:12px;
+}
+.free-pill{
+  background:var(--ember);color:var(--paper);
+  font-size:9px;padding:3px 9px;letter-spacing:0.1em;
+}
+.sess h3{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:22px;font-weight:400;
+  color:var(--ink);letter-spacing:0.02em;
+  margin-bottom:8px;line-height:1.5;
+}
+.sess-en{
+  font-family:'EB Garamond',serif;font-size:12px;font-style:italic;
+  color:var(--dustl);margin-bottom:22px;
+}
+.sess p{
+  font-size:13px;line-height:2.2;
+  color:var(--dust);letter-spacing:0.04em;margin-bottom:32px;
+}
+.sess-meta{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:14px;padding-top:24px;
+  border-top:1px solid var(--paper3);
+}
+.sm{font-size:10px;letter-spacing:0.1em;color:var(--dustl);text-transform:uppercase}
+.sm strong{
+  display:block;font-family:'EB Garamond',serif;
+  font-size:18px;font-weight:400;color:var(--ink);
+  letter-spacing:0.04em;margin-bottom:2px;
+}
+
+/* B2B — NEW */
+.s-b2b{
+  background:var(--moss);padding:140px 0;
+  position:relative;overflow:hidden;
+}
+.b2b-wrap{
+  display:grid;grid-template-columns:6fr 5fr;
+  gap:80px;align-items:start;
+}
+.b2b-l h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(28px,3.2vw,48px);
+  font-weight:400;line-height:1.45;
+  color:var(--paper);letter-spacing:0.02em;
+  margin-bottom:32px;
+}
+.b2b-l h2 em{font-style:normal;color:var(--ember3)}
+.b2b-l p{
+  font-size:14px;line-height:2.4;
+  color:rgba(240,234,216,0.45);letter-spacing:0.05em;
+  margin-bottom:20px;
+}
+.b2b-l p strong{color:rgba(240,234,216,0.85);font-weight:400}
+.b2b-features{
+  margin-top:40px;display:flex;flex-direction:column;gap:20px;
+}
+.b2b-feat{
+  display:flex;gap:20px;align-items:flex-start;
+  padding:24px 28px;
+  background:rgba(240,234,216,0.04);
+  border-left:2px solid var(--ember2);
+}
+.b2b-feat-n{
+  font-family:'EB Garamond',serif;
+  font-size:18px;font-weight:400;
+  color:var(--ember3);line-height:1;flex-shrink:0;
+}
+.b2b-feat h3{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:14px;font-weight:400;
+  color:var(--paper);letter-spacing:0.04em;
+  margin-bottom:6px;line-height:1.6;
+}
+.b2b-feat p{
+  font-size:12px;line-height:1.9;
+  color:rgba(240,234,216,0.4);
+  letter-spacing:0.04em;margin-bottom:0;
+}
+.b2b-r{
+  background:rgba(240,234,216,0.04);
+  border:1px solid rgba(240,234,216,0.08);
+  padding:48px 40px;
+  position:sticky;top:100px;
+}
+.b2b-r-label{
+  font-family:'EB Garamond',serif;
+  font-size:10px;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--ember3);margin-bottom:20px;display:block;
+}
+.b2b-r h3{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:22px;font-weight:400;
+  color:var(--paper);letter-spacing:0.02em;
+  line-height:1.5;margin-bottom:24px;
+}
+.b2b-r-desc{
+  font-size:13px;line-height:2.2;
+  color:rgba(240,234,216,0.4);
+  letter-spacing:0.05em;margin-bottom:32px;
+}
+.b2b-r-list{
+  list-style:none;margin-bottom:36px;
+  padding-top:24px;border-top:1px solid rgba(240,234,216,0.08);
+}
+.b2b-r-list li{
+  display:flex;justify-content:space-between;
+  padding:10px 0;
+  font-size:12px;letter-spacing:0.05em;
+}
+.b2b-r-list li span:first-child{color:rgba(240,234,216,0.4)}
+.b2b-r-list li span:last-child{color:var(--paper)}
+.btn-b2b{
+  display:block;width:100%;
+  padding:16px 32px;text-align:center;
+  background:transparent;border:1px solid var(--ember2);
+  color:var(--ember3);
+  font-family:'EB Garamond',serif;font-size:13px;
+  letter-spacing:0.22em;text-transform:uppercase;
+  text-decoration:none;transition:all 0.35s;
+}
+.btn-b2b:hover{background:var(--ember);color:var(--paper);border-color:var(--ember)}
+
+/* FLOW */
+.s-flow{background:var(--ink2);padding:140px 0}
+.flow-header{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:60px;align-items:end;margin-bottom:96px;
+}
+.flow-header h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(26px,3.2vw,46px);
+  font-weight:400;color:var(--paper);
+  letter-spacing:0.02em;line-height:1.5;
+}
+.flow-header p{
+  font-size:13px;line-height:2.3;
+  color:rgba(240,234,216,0.32);letter-spacing:0.05em;
+}
+.flow-steps{
+  display:grid;grid-template-columns:repeat(5,1fr);
+  gap:0;position:relative;
+}
+.flow-steps::before{
+  content:'';position:absolute;
+  top:34px;left:36px;right:36px;height:1px;
+  background:rgba(240,234,216,0.07);
+}
+.fstep{padding:0 24px 0 0;position:relative}
+.fstep-dot{
+  width:68px;height:68px;border-radius:50%;
+  border:1px solid rgba(240,234,216,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'EB Garamond',serif;font-size:17px;
+  color:rgba(240,234,216,0.25);
+  background:var(--ink2);
+  position:relative;z-index:1;margin-bottom:32px;
+  transition:all 0.38s;
+}
+.fstep:hover .fstep-dot{
+  background:var(--ember);border-color:var(--ember);color:var(--paper);
+}
+.fstep-t{
+  font-size:9px;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--ember2);font-family:'EB Garamond',serif;
+  display:block;margin-bottom:8px;
+}
+.fstep h3{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:14px;font-weight:400;
+  color:var(--paper);letter-spacing:0.04em;
+  margin-bottom:10px;line-height:1.6;
+}
+.fstep p{
+  font-size:11.5px;line-height:2.0;
+  color:rgba(240,234,216,0.28);letter-spacing:0.04em;
+}
+
+/* RULES */
+.s-rules{background:var(--ink);padding:140px 0}
+.rules-split{
+  display:grid;grid-template-columns:4fr 6fr;gap:100px;align-items:start;
+}
+.rules-l h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(26px,3.2vw,48px);
+  font-weight:400;color:var(--paper);
+  letter-spacing:0.02em;line-height:1.55;margin-bottom:28px;
+}
+.rules-l p{
+  font-size:13px;line-height:2.3;
+  color:rgba(240,234,216,0.3);letter-spacing:0.05em;
+}
+.rule{
+  padding:32px 0;
+  border-bottom:1px solid rgba(240,234,216,0.055);
+  display:flex;gap:28px;align-items:flex-start;
+}
+.rule:first-of-type{border-top:1px solid rgba(240,234,216,0.055)}
+.rule-n{
+  font-family:'EB Garamond',serif;
+  font-size:26px;font-weight:400;
+  color:var(--ember);line-height:1;
+  flex-shrink:0;opacity:0.55;padding-top:2px;
+}
+.rule-b h3{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:16px;font-weight:400;
+  color:var(--paper);letter-spacing:0.05em;margin-bottom:7px;
+}
+.rule-b p{
+  font-size:12.5px;line-height:2.0;
+  color:rgba(240,234,216,0.28);letter-spacing:0.04em;
+}
+
+/* VOICES */
+.s-voices{background:var(--paper);padding:140px 0}
+.v-head{margin-bottom:72px}
+.v-head h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(26px,3.2vw,46px);
+  font-weight:400;color:var(--ink);
+  letter-spacing:0.02em;line-height:1.5;
+}
+.v-disclaimer{
+  margin-top:24px;
+  padding:16px 20px;
+  background:rgba(158,62,24,0.05);
+  border-left:2px solid var(--ember2);
+  font-size:12px;line-height:1.9;
+  color:var(--dust);letter-spacing:0.04em;
+  max-width:680px;
+}
+.v-disclaimer strong{color:var(--ember);font-weight:400}
+.vgrid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:2px;background:var(--paper3);
+}
+.voice{
+  background:var(--linen);padding:56px 52px;transition:background 0.3s;
+}
+.voice:hover{background:var(--paper2)}
+.vm{
+  font-family:'EB Garamond',serif;
+  font-size:72px;line-height:0.55;
+  color:var(--ember4);margin-bottom:28px;
+  display:block;opacity:0.38;
+}
+.voice p{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:17px;font-weight:400;line-height:2.0;
+  color:var(--ink);letter-spacing:0.04em;margin-bottom:28px;
+}
+.vwho{
+  font-family:'EB Garamond',serif;
+  font-size:11px;letter-spacing:0.22em;
+  color:var(--dustl);text-transform:uppercase;
+  display:flex;align-items:center;gap:13px;
+}
+.vwho::before{content:'';width:18px;height:1px;background:var(--dustl)}
+
+/* FAQ — NEW: trust building */
+.s-faq{background:var(--linen);padding:140px 0}
+.faq-grid{
+  display:grid;grid-template-columns:1fr 2fr;gap:80px;
+}
+.faq-l h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(26px,3.2vw,44px);
+  font-weight:400;color:var(--ink);
+  letter-spacing:0.02em;line-height:1.5;
+  margin-bottom:24px;
+}
+.faq-l p{
+  font-size:13px;line-height:2.3;
+  color:var(--dust);letter-spacing:0.05em;
+}
+.faq-list{}
+.faq-item{
+  border-bottom:1px solid var(--paper3);
+  padding:24px 0;
+}
+.faq-item:first-child{border-top:1px solid var(--paper3)}
+.faq-q{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:15px;font-weight:400;
+  color:var(--ink);letter-spacing:0.03em;
+  margin-bottom:12px;line-height:1.6;
+  cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:20px;
+}
+.faq-q::after{
+  content:'+';font-family:'EB Garamond',serif;
+  font-size:24px;color:var(--ember);transition:transform 0.3s;
+  flex-shrink:0;font-weight:400;
+}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{
+  font-size:13px;line-height:2.2;
+  color:var(--dust);letter-spacing:0.04em;
+  max-height:0;overflow:hidden;
+  transition:max-height 0.4s ease, margin 0.4s ease;
+  margin:0;
+}
+.faq-item.open .faq-a{max-height:300px;margin-top:8px}
+
+/* CTA */
+.s-cta{
+  position:relative;min-height:92vh;
+  display:flex;align-items:center;overflow:hidden;
+}
+.cta-bg{
+  position:absolute;inset:0;
+  background-image:url('https://images.unsplash.com/photo-1476231682828-37e571bc172f?w=1800&q=80');
+  background-size:cover;background-position:center 60%;
+  filter:brightness(0.4) saturate(0.6);
+}
+.cta-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to right,
+    rgba(19,18,13,0.97) 0%,rgba(19,18,13,0.85) 50%,rgba(19,18,13,0.3) 100%);
+}
+.cta-body{
+  position:relative;z-index:2;
+  padding:0 60px;max-width:720px;
+}
+.cta-body h2{
+  font-family:'Shippori Mincho B1',serif;
+  font-size:clamp(36px,6vw,84px);
+  font-weight:400;line-height:1.25;
+  color:var(--paper);letter-spacing:0.01em;margin-bottom:16px;
+}
+.cta-body h2 em{font-style:normal;color:var(--ember3)}
+.cta-en{
+  font-family:'EB Garamond',serif;
+  font-size:16px;font-style:italic;
+  color:rgba(240,234,216,0.28);
+  letter-spacing:0.07em;display:block;margin-bottom:52px;
+}
+.cta-note{
+  padding:20px 28px;
+  border:1px solid rgba(158,62,24,0.22);
+  background:rgba(158,62,24,0.07);
+  margin-bottom:36px;max-width:460px;
+}
+.cta-note p{
+  font-size:13px;line-height:1.9;
+  color:rgba(240,234,216,0.5);letter-spacing:0.05em;
+}
+.cta-note p strong{color:var(--ember3);font-weight:400}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:16px;
+  padding:18px 52px;
+  background:var(--ember);color:var(--paper);
+  font-family:'EB Garamond',serif;font-size:14px;
+  letter-spacing:0.25em;text-transform:uppercase;
+  text-decoration:none;border:1px solid var(--ember);
+  transition:all 0.38s;
+}
+.btn-cta:hover{background:transparent;color:var(--ember4);border-color:var(--ember4);gap:24px}
+
+/* FOOTER */
+footer{
+  background:var(--ink2);padding:44px 60px;
+  display:grid;grid-template-columns:1fr auto 1fr;
+  align-items:center;border-top:1px solid rgba(240,234,216,0.04);
+}
+.fl{
+  font-family:'EB Garamond',serif;
+  font-size:14px;letter-spacing:0.32em;
+  color:rgba(240,234,216,0.22);
+}
+.fc{
+  font-size:10px;letter-spacing:0.12em;
+  color:rgba(240,234,216,0.13);text-align:center;
+}
+.fr{
+  text-align:right;font-size:10px;
+  letter-spacing:0.12em;color:rgba(240,234,216,0.13);
+}
+
+/* COMING SOON overlay */
+.cs-wrap{position:relative}
+.cs-overlay{
+  position:absolute;inset:0;z-index:10;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:14px;
+  background:rgba(19,18,13,0.72);
+  backdrop-filter:blur(3px);
+}
+.cs-badge{
+  font-family:'EB Garamond',serif;
+  font-size:11px;letter-spacing:0.5em;text-transform:uppercase;
+  color:var(--paper);
+  border:1px solid rgba(240,234,216,0.3);
+  padding:10px 28px;
+}
+.cs-sub{
+  font-size:11px;letter-spacing:0.1em;
+  color:rgba(240,234,216,0.35);
+}
+/* Section-level Coming Soon banner */
+.s-coming-soon{
+  position:relative;
+}
+.s-coming-soon-banner{
+  position:absolute;top:0;left:0;right:0;z-index:20;
+  background:var(--ember);
+  padding:10px 0;text-align:center;
+  font-family:'EB Garamond',serif;
+  font-size:11px;letter-spacing:0.4em;text-transform:uppercase;
+  color:var(--paper);
+}
+.s-coming-soon > *:not(.s-coming-soon-banner){
+  opacity:0.35;pointer-events:none;filter:blur(1px);
+  user-select:none;
+}
+
+
+@media(max-width:960px){
+  nav{padding:0 24px}
+  .nav-links{display:none}
+  .hero-body{padding:0 24px 72px}
+  .hero-h1{font-size:clamp(40px,10vw,72px)}
+  .hero-bottom-row{grid-template-columns:1fr;gap:32px}
+  .hero-actions{align-items:flex-start}
+  .scroll-ind{display:none}
+  .target-row{flex-direction:column;gap:16px}
+  .si{padding:0 24px}
+  .hook-split{grid-template-columns:1fr}
+  .hook-photo{height:56vw}
+  .hook-content{padding:64px 24px}
+  .stats-row{grid-template-columns:1fr}
+  .stat{border-right:none;border-bottom:1px solid rgba(240,234,216,0.05);padding:40px 24px}
+  .ben-header{grid-template-columns:1fr;gap:24px}
+  .bens{grid-template-columns:1fr}
+  .s-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:auto;height:auto}
+  .mosaic-item.tall{grid-row:span 1;height:52vw}
+  .mosaic-item{height:44vw}
+  .com-grid{grid-template-columns:1fr;gap:48px}
+  .founder-wrap{grid-template-columns:1fr;gap:40px}
+  .founder-photo{width:100%;height:90vw;max-height:480px}
+  .free-wrap{grid-template-columns:1fr;gap:48px}
+  .sess-header{grid-template-columns:1fr;gap:24px}
+  .sess-list{grid-template-columns:1fr}
+  .b2b-wrap{grid-template-columns:1fr;gap:48px}
+  .b2b-r{position:static}
+  .flow-header{grid-template-columns:1fr;gap:24px}
+  .flow-steps{grid-template-columns:1fr;gap:40px}
+  .flow-steps::before{display:none}
+  .rules-split{grid-template-columns:1fr;gap:56px}
+  .vgrid{grid-template-columns:1fr}
+  .faq-grid{grid-template-columns:1fr;gap:48px}
+  .cta-body{padding:0 24px}
+  footer{grid-template-columns:1fr;gap:12px;padding:36px 24px;text-align:center}
+  .fr{text-align:center}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <div class="nav-logo">Brain Gym</div>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="#benefits">メリット</a></li>
+      <li><a href="#sessions">セッション</a></li>
+      <li><a href="#community" style="opacity:0.4">コミュニティ（準備中）</a></li>
+      <li><a href="#b2b" style="opacity:0.4">法人向け（準備中）</a></li>
+    </ul>
+    <a href="#cta" class="nav-apply">参加する（¥1,500）</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-ov"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-body">
+    <div class="hero-eyebrow">Brain Gym — Analog Reset Experience</div>
+    <h1 class="hero-h1">
+      スマホをやめろとは
+      <em>言わない。</em>
+    </h1>
+    <div class="hero-rule"></div>
+    <div class="hero-bottom-row">
+      <p class="hero-sub">
+        <strong>ただ、月に一度だけ、全部置いてみてほしい。</strong><br>
+        使用量を変える必要はない。仕事・通知・Slackに追われながら疲弊していく脳に、意図的な「オフの時間」を与える。それだけで、思考も、出会いも、自分の感覚も変わります。
+      </p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-h-main">参加する →</a>
+        <span class="hero-free-note">¥1,500 · 招待制 · 少人数</span>
+      </div>
+    </div>
+  </div>
+  <div class="scroll-ind">
+    <div class="scroll-ind-line"></div>
+    <span class="scroll-ind-label">Scroll</span>
+  </div>
+</section>
+
+<!-- TARGET STRIP -->
+<section class="s-target">
+  <div class="si">
+    <div class="target-row">
+      <span class="target-label">For —</span>
+      <span class="target-tag">都内の20〜40代</span>
+      <span class="target-tag">仕事と情報に追われている人</span>
+      <span class="target-tag">本当の対話を求める人</span>
+      <span class="target-tag">ひとりでも、ペアでも歓迎</span>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="tick-item"><div class="tick-dot"></div>思考がクリアになる</div>
+    <div class="tick-item"><div class="tick-dot"></div>五感が戻ってくる</div>
+    <div class="tick-item"><div class="tick-dot"></div>新しい人と出会える</div>
+    <div class="tick-item"><div class="tick-dot"></div>比較から自由になる</div>
+    <div class="tick-item"><div class="tick-dot"></div>会話が深くなる</div>
+    <div class="tick-item"><div class="tick-dot"></div>頭の中が静かになる</div>
+    <div class="tick-item"><div class="tick-dot"></div>ものの見方が変わる</div>
+    <div class="tick-item"><div class="tick-dot"></div>思考がクリアになる</div>
+    <div class="tick-item"><div class="tick-dot"></div>五感が戻ってくる</div>
+    <div class="tick-item"><div class="tick-dot"></div>新しい人と出会える</div>
+    <div class="tick-item"><div class="tick-dot"></div>比較から自由になる</div>
+    <div class="tick-item"><div class="tick-dot"></div>会話が深くなる</div>
+    <div class="tick-item"><div class="tick-dot"></div>頭の中が静かになる</div>
+    <div class="tick-item"><div class="tick-dot"></div>ものの見方が変わる</div>
+  </div>
+</div>
+
+<!-- HOOK -->
+<section class="s-hook">
+  <div class="hook-split">
+    <div class="hook-photo jr">
+      <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=900&q=80" alt="静かな森">
+    </div>
+    <div class="hook-content">
+      <div class="sl jr">問題提起 — The Problem</div>
+      <h2 class="jr d1">問題は、スマホじゃない。<br><em>ずっとオンな脳</em>だ。</h2>
+      <p class="jr d2">スマートフォンをやめる必要はない。インターネットを否定するつもりもない。問題は、<strong>脳が一度もオフにならない</strong>ことです。</p>
+      <p class="jr d3">筋肉はトレーニングと休息の繰り返しで成長する。脳も同じです。使い続けるだけでは思考は浅くなる。BRAIN GYMは「意図的な休息」を体験として届けます。</p>
+      <table class="ba jr d4">
+        <tr>
+          <th class="bad">今の状態</th>
+          <th class="good">体験後の変化</th>
+        </tr>
+        <tr><td class="bad-c">通知のたびに思考が途切れる</td><td class="good-c">ひとつのことを深く考えられる</td></tr>
+        <tr><td class="bad-c">他人と自分を比較し続ける</td><td class="good-c">自分の感覚で動けるようになる</td></tr>
+        <tr><td class="bad-c">深く考える前に次の情報が来る</td><td class="good-c">アイデアが自然に浮かんでくる</td></tr>
+        <tr><td class="bad-c">沈黙が気まずくて埋めてしまう</td><td class="good-c">沈黙の中に安心感が生まれる</td></tr>
+        <tr><td class="bad-c">会話中もスマホが気になる</td><td class="good-c">目の前の人と本当に向き合える</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="s-stats">
+  <div class="si">
+    <div class="stats-row">
+      <div class="stat jr d1">
+        <div class="stat-n">150<sup>回/日</sup></div>
+        <div class="stat-label">スマホを確認する平均回数</div>
+        <div class="stat-src">Dscout Research, 2016</div>
+      </div>
+      <div class="stat jr d2">
+        <div class="stat-n">2.5<sup>時間/日</sup></div>
+        <div class="stat-label">SNS閲覧に費やす平均時間</div>
+        <div class="stat-src">DataReportal, 2024</div>
+      </div>
+      <div class="stat jr d3">
+        <div class="stat-n">47<sup>%</sup></div>
+        <div class="stat-label">「深く考えられない」と感じている人</div>
+        <div class="stat-src">Microsoft Work Trend Index, 2023</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="s-benefits" id="benefits">
+  <div class="si">
+    <div class="sl jr">得られるもの — What You Get</div>
+    <div class="ben-header">
+      <h2 class="jr d1">90分で変わること。<br>それが続くこと。</h2>
+      <p class="jr d2">「体験してみたら思ったより良かった」では困ります。何がどう変わるのか、正直に書きます。</p>
+    </div>
+    <div class="bens">
+      <div class="ben jr d1">
+        <div class="ben-n">01</div>
+        <h3>ものの見方が変わる</h3>
+        <p>デジタルフィルターを外した目で自然を見ると、色・音・匂いの解像度が上がります。五感で世界を受け取る感覚が戻ってくる。</p>
+        <div class="ben-voice">"帰り道の景色がいつもと全然違って見えた"</div>
+      </div>
+      <div class="ben jr d2">
+        <div class="ben-n">02</div>
+        <h3>思考が深くなる</h3>
+        <p>通知のない環境に30分いるだけで、脳の使われ方が変わります。アイデアが浮かぶ、問題の本質が見える、考えがまとまる。</p>
+        <div class="ben-voice">"久しぶりに何かを深く考えた気がした"</div>
+      </div>
+      <div class="ben jr d3">
+        <div class="ben-n">03</div>
+        <h3>新しい出会いがある</h3>
+        <p>肩書きなし・スマホなしでつながる人は、SNSで出会う人とは別物。職業や見た目ではなく、その人そのものに出会える場所です。</p>
+        <div class="ben-voice">"ここで会った人とは今でも続いている"</div>
+      </div>
+      <div class="ben jr d4">
+        <div class="ben-n">04</div>
+        <h3>比較から自由になる</h3>
+        <p>SNSをやめるのではなく、「比較のループ」から一時的に降りる体験をします。自分のペースで感じる感覚は、取り戻せば忘れにくい。</p>
+        <div class="ben-voice">"誰かと比べるのが馬鹿らしくなった"</div>
+      </div>
+      <div class="ben jr d5">
+        <div class="ben-n">05</div>
+        <h3>頭の中が静かになる</h3>
+        <p>常にざわついている「心の中のタブ」が閉じていく感覚。瞑想でも宗教でもなく、情報過多から脳を出すことで起きる変化です。</p>
+        <div class="ben-voice">"帰ってからぐっすり眠れた"</div>
+      </div>
+      <div class="ben jr d6">
+        <div class="ben-n">06</div>
+        <h3>自分の感覚を信頼できる</h3>
+        <p>いいねの数や他人の評価ではなく、自分が何を感じているかに気づく時間。判断の軸が外から内に移っていきます。</p>
+        <div class="ben-voice">"やりたいことが急に明確になった"</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO MOSAIC -->
+<div class="s-mosaic">
+  <div class="mosaic-item tall">
+    <img src="https://images.unsplash.com/photo-1559827291-72ee739d0d9a?w=900&q=75" alt="焚き火">
+    <span class="mosaic-label">Campfire</span>
+  </div>
+  <div class="mosaic-item">
+    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=700&q=75" alt="山">
+    <span class="mosaic-label">Silence</span>
+  </div>
+  <div class="mosaic-item">
+    <img src="https://images.unsplash.com/photo-1455541504462-57ebb2a9cec1?w=700&q=75" alt="ノート">
+    <span class="mosaic-label">Analog</span>
+  </div>
+  <div class="mosaic-item">
+    <img src="https://images.unsplash.com/photo-1541199249251-f713e6145474?w=700&q=75" alt="対話">
+    <span class="mosaic-label">Dialogue</span>
+  </div>
+  <div class="mosaic-item">
+    <img src="https://images.unsplash.com/photo-1504851149312-7a075b496cc7?w=700&q=75" alt="自然">
+    <span class="mosaic-label">Nature</span>
+  </div>
+</div>
+
+<!-- COMMUNITY -->
+<section class="s-community s-coming-soon" id="community">
+  <div class="s-coming-soon-banner">Coming Soon — コミュニティは順次オープン予定</div>
+  <div class="si">
+    <div class="com-grid">
+      <div class="com-text">
+        <div class="sl jr">COMMUNITY — 一回で終わらない</div>
+        <h2 class="jr d1">セッションは入口。<br>その先に、<em>続く繋がり</em>がある。</h2>
+        <p class="jr d2">BRAIN GYMは、一度きりの体験で終わりません。参加者同士は LINE オープンチャットで緩く繋がり、月1回のサイレントウォーク・読書会など、自由参加のミニイベントが続いています。</p>
+        <p class="jr d3"><strong>"あの場所で会った人"が日常の一部になる。</strong>強い帰属を求める同窓会でもなく、ただの知り合いでもない、ちょうど良い距離感のコミュニティです。</p>
+        <div class="com-stats jr d4">
+          <div class="com-stat">
+            <div class="cs-n">月1回</div>
+            <div class="cs-label">無料コミュニティ<br>イベント開催</div>
+          </div>
+          <div class="com-stat">
+            <div class="cs-n">少人数</div>
+            <div class="cs-label">顔の見える<br>関係性を維持</div>
+          </div>
+        </div>
+      </div>
+      <div class="com-photo jr d2">
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&q=80" alt="コミュニティ">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER -->
+<section class="s-founder">
+  <div class="si">
+    <div class="founder-wrap">
+      <div class="founder-photo jr">
+        <!-- ⚠ プレースホルダー：あとでオーナー本人の写真に差し替え -->
+        <div class="founder-placeholder">
+          <div class="ph-icon">◯</div>
+          <div class="ph-label">Photo</div>
+          <div class="ph-note">オーナー写真を<br>あとで差し替え</div>
+        </div>
+      </div>
+      <div class="founder-text">
+        <div class="sl jr" style="color:var(--ember3)">FOUNDER — はじめた理由</div>
+        <h2 class="jr d1">"自分が一番、<em>脳が壊れていた。</em>"</h2>
+        <p class="jr d2">BRAIN GYMは、ある一人の学生（中央大学 在学中）が「自分のために」始めた場所です。スクリーンタイムは1日9時間。SNSの比較で疲弊し、深く考えることを忘れていました。</p>
+        <p class="jr d3">セルフヘルプ本でも、瞑想アプリでもなく、ただ「スマホを置いて、人と静かに過ごす場所」が必要だった。それを自分で作るしかなかった。</p>
+        <p class="jr d4">大規模な組織ではありません。広告も打っていません。それでも、参加者の声を聞き続けながら、ひとつずつ場を育てています。</p>
+
+        <div class="founder-card jr d5">
+          <div class="fc-name">
+            <span class="fc-jp">山﨑 聞太</span>
+            <span class="fc-role">主催 / 中央大学 在学中 · BRAIN GYM</span>
+          </div>
+          <p class="fc-message">"デジタルに使われるのではなく、利用する。<br>デジタルの波が加速するこの現在、人間の対抗手段は思考力です。他者とのつながり、自己理解を通して、正解を一緒に見つけていきましょう。"</p>
+        </div>
+
+        <div class="founder-meta jr d5">
+          <div class="fmeta-item"><strong>2025年</strong>始動</div>
+          <div class="fmeta-item"><strong>東京</strong>拠点</div>
+          <div class="fmeta-item"><strong>少人数制</strong>運営</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FREE → PRICE -->
+<section class="s-free">
+  <div class="si">
+    <div class="free-wrap">
+      <div class="free-txt">
+        <div class="sl jr" style="color:var(--ember3)">価格について — Our Pricing</div>
+        <h2 class="jr d1">¥1,500で、<br><em>本気の時間</em>を。</h2>
+        <p class="jr d2">「無料だから来た」という人に、本当の体験は届きにくい。¥1,500という金額は、コーヒー一杯と同じです。でもその分、ちゃんと来ようと思って来てほしい。</p>
+        <p class="jr d2">少人数制・招待制。気軽に大勢を集めるつもりはありません。本当に来たいと思った人だけに、来てほしい。</p>
+      </div>
+      <div class="free-box jr d3">
+        <span class="fb-lbl">参加費</span>
+        <div class="fb-num">¥1,500</div>
+        <div class="fb-sub">招待制 · 少人数<br>体験して、判断はそれから。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SESSIONS -->
+<section class="s-sessions" id="sessions">
+  <div class="si">
+    <div class="sl jr">SESSIONS — 体験の種類</div>
+    <div class="sess-header">
+      <h2 class="jr d1">入口は3つ。<br>どこからでも入れる。</h2>
+      <p class="jr d2">いきなり合宿じゃなくていい。まずは一番ハードルの低いところから始めてください。</p>
+    </div>
+    <div class="sess-list">
+      <div class="sess featured jr d1">
+        <div class="sess-tag">Entry</div>
+        <h3>手書き日記セッション</h3>
+        <div class="sess-en">The Writing Session</div>
+        <p>紙とペンだけで過ごす90分。書く、描く、ただ座る。室内開催なので場所を選ばない。最も始めやすい入口。</p>
+        <div class="sess-meta">
+          <div class="sm"><strong>90分</strong>時間</div>
+          <div class="sm"><strong>6–8名</strong>人数</div>
+          <div class="sm"><strong>室内</strong>場所</div>
+          <div class="sm"><strong>¥1,500</strong>参加費</div>
+        </div>
+      </div>
+      <div class="sess jr d2">
+        <div class="sess-tag">Standard</div>
+        <h3>焚き火読書会</h3>
+        <div class="sess-en">The Campfire Session</div>
+        <p>本を持ち寄り、焚き火のそばで1時間無言で読む。その後自由に話す。五感を使う時間が思考を整えていきます。</p>
+        <div class="sess-meta">
+          <div class="sm"><strong>3時間</strong>時間</div>
+          <div class="sm"><strong>6–10名</strong>人数</div>
+          <div class="sm"><strong>屋外</strong>場所</div>
+          <div class="sm"><strong>¥3,000〜</strong>参加費</div>
+        </div>
+      </div>
+      <div class="sess jr d3 cs-wrap">
+        <div class="cs-overlay">
+          <span class="cs-badge">Coming Soon</span>
+          <span class="cs-sub">準備中 — もうすぐ公開</span>
+        </div>
+        <div class="sess-tag">Immersive</div>
+        <h3>デジタルデトックス合宿</h3>
+        <div class="sess-en">The Overnight Reset</div>
+        <p>一泊二日、都市近郊の自然へ。サイレントウォーク、焚き火対話、早朝の静寂。変化の深さが他とは段違いです。</p>
+        <div class="sess-meta">
+          <div class="sm"><strong>1泊2日</strong>時間</div>
+          <div class="sm"><strong>6–10名</strong>人数</div>
+          <div class="sm"><strong>自然</strong>場所</div>
+          <div class="sm"><strong>¥18,000〜</strong>参加費</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- B2B -->
+<section class="s-b2b s-coming-soon" id="b2b">
+  <div class="s-coming-soon-banner">Coming Soon — 法人向けプログラムは準備中です</div>
+  <div class="si">
+    <div class="sl jr" style="color:var(--ember3)">FOR BUSINESS — 法人向け</div>
+    <div class="b2b-wrap">
+      <div class="b2b-l">
+        <h2 class="jr d1">チームの<em>思考力</em>と<em>関係性</em>を、<br>まとめて整える。</h2>
+        <p class="jr d2">創造性が落ちる。会議が浅い。チームの会話が薄い。原因の多くは、メンバーひとりひとりが<strong>"常時オン"</strong>な状態にあることです。</p>
+        <p class="jr d3">BRAIN GYMの法人向けプログラムは、チームビルディング・新人研修・幹部リトリートなどに合わせてカスタマイズします。スマートフォンを置いた状態で、本当の対話と思考の時間を提供します。</p>
+        <div class="b2b-features">
+          <div class="b2b-feat jr d3">
+            <div class="b2b-feat-n">01</div>
+            <div>
+              <h3>チームビルディング</h3>
+              <p>肩書きを外した対話で、チームの本当の関係性を再構築する。半日〜1日プログラム。</p>
+            </div>
+          </div>
+          <div class="b2b-feat jr d4">
+            <div class="b2b-feat-n">02</div>
+            <div>
+              <h3>幹部リトリート</h3>
+              <p>意思決定者のための、深く考える時間。一泊二日の没入型プログラム。</p>
+            </div>
+          </div>
+          <div class="b2b-feat jr d5">
+            <div class="b2b-feat-n">03</div>
+            <div>
+              <h3>クリエイティブ研修</h3>
+              <p>創造性が必要な職種向け。情報遮断後にこそ生まれる発想を体験する設計。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="b2b-r jr d2">
+        <span class="b2b-r-label">Custom Program</span>
+        <h3>御社の課題に合わせて設計します。</h3>
+        <p class="b2b-r-desc">対象人数、目的、時間、場所、予算に応じてプログラムを完全カスタマイズ。まずはヒアリングから。</p>
+        <ul class="b2b-r-list">
+          <li><span>対応人数</span><span>10〜30名</span></li>
+          <li><span>提供期間</span><span>半日 / 1日 / 1泊2日</span></li>
+          <li><span>提供形態</span><span>都内 / 都市近郊 / 出張</span></li>
+          <li><span>料金</span><span>応相談</span></li>
+        </ul>
+        <a href="#cta" class="btn-b2b">法人向け資料を請求 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="s-flow">
+  <div class="si">
+    <div class="sl jr" style="color:var(--ember2)">SESSION FLOW — 当日の流れ</div>
+    <div class="flow-header">
+      <h2 class="jr d1">当日、何が起きるのか。</h2>
+      <p class="jr d2">不安をなくすために正直に書きます。強制されることは何もない。ただ5つのステップがあるだけです。</p>
+    </div>
+    <div class="flow-steps">
+      <div class="fstep jr d1">
+        <div class="fstep-dot">01</div>
+        <span class="fstep-t">Arrival</span>
+        <h3>スマホを預ける</h3>
+        <p>強制ではなく選択として。「今日だけは置いてみよう」という気持ちで来てください。</p>
+      </div>
+      <div class="fstep jr d2">
+        <div class="fstep-dot">02</div>
+        <span class="fstep-t">Silence</span>
+        <h3>アナログな時間</h3>
+        <p>紙とペン、または何もない空間で過ごす。最初は落ち着かなくて当然です。</p>
+      </div>
+      <div class="fstep jr d3">
+        <div class="fstep-dot">03</div>
+        <span class="fstep-t">Nature</span>
+        <h3>無言で歩く</h3>
+        <p>言葉なしで自然を歩く。その沈黙の中に、今日最大の体験があります。</p>
+      </div>
+      <div class="fstep jr d4">
+        <div class="fstep-dot">04</div>
+        <span class="fstep-t">Dialogue</span>
+        <h3>肩書きなしで話す</h3>
+        <p>職業も役職も言わない。名前だけで向き合う対話は、驚くほど深くなります。</p>
+      </div>
+      <div class="fstep jr d5">
+        <div class="fstep-dot">05</div>
+        <span class="fstep-t">Reset</span>
+        <h3>静かに振り返る</h3>
+        <p>今日感じたことを書き留め、日常に持ち帰る準備をする。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RULES -->
+<section class="s-rules">
+  <div class="si">
+    <div class="sl jr" style="color:var(--ember2)">3 RULES — この場の約束</div>
+    <div class="rules-split">
+      <div class="rules-l">
+        <h2 class="jr d1">ルールは<br>3つだけ。<br>それだけで、<br>全部変わる。</h2>
+        <p class="jr d2">複雑なことは何もない。この3つを守るだけで、場の質がまったく変わります。</p>
+      </div>
+      <div class="rules-r">
+        <div class="rule jr d2">
+          <div class="rule-n">01</div>
+          <div class="rule-b">
+            <h3>スマートフォン禁止</h3>
+            <p>撮影・通話・チェック、全て預かります。「それが不安」という気持ちを含めて体験の一部です。</p>
+          </div>
+        </div>
+        <div class="rule jr d3">
+          <div class="rule-n">02</div>
+          <div class="rule-b">
+            <h3>肩書き・プロフィールを言わない</h3>
+            <p>職業、会社名、フォロワー数。全部関係ない。あなたは「あなた」として存在します。</p>
+          </div>
+        </div>
+        <div class="rule jr d4">
+          <div class="rule-n">03</div>
+          <div class="rule-b">
+            <h3>沈黙を埋めない</h3>
+            <p>気まずい沈黙を話で埋めなくていい。その沈黙の中に、今日最大の体験があります。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOICES -->
+<section class="s-voices">
+  <div class="si">
+    <div class="sl jr">VOICES — 参加者の声</div>
+    <div class="v-head">
+      <h2 class="jr d1">大げさじゃない、<br>正直な声。</h2>
+      <p class="v-disclaimer jr d2">※ 以下は、こうした声を集めていく予定の<strong>コメント例</strong>です。実際の参加者の声は、セッション開催後に随時掲載していきます。</p>
+    </div>
+    <div class="vgrid">
+      <div class="voice jr d1">
+        <span class="vm">"</span>
+        <p>終わったとき、頭の中が驚くほど静かになっていた。普段どれだけノイズの中に生きていたか、初めて気づいた。</p>
+        <div class="vwho">T.M. — 会社員, 34歳</div>
+      </div>
+      <div class="voice jr d2">
+        <span class="vm">"</span>
+        <p>スマホなしで誰かと話すのが、こんなに豊かだとは思わなかった。久しぶりに本当の意味で考えた気がする。</p>
+        <div class="vwho">R.K. — デザイナー, 28歳</div>
+      </div>
+      <div class="voice jr d3">
+        <span class="vm">"</span>
+        <p>肩書きを外した会話は、こんなに違うのか。相手のことが、プロフィールなしのほうが深く伝わってきた。</p>
+        <div class="vwho">Y.H. — 経営者, 41歳</div>
+      </div>
+      <div class="voice jr d4">
+        <span class="vm">"</span>
+        <p>帰り道の景色がいつもと違って見えた。五感がちゃんと動いてる感じ。あ、これが普通なんだと思った。</p>
+        <div class="vwho">N.S. — 学生, 22歳</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="s-faq">
+  <div class="si">
+    <div class="faq-grid">
+      <div class="faq-l">
+        <div class="sl jr">FAQ — よくある質問</div>
+        <h2 class="jr d1">不安は、<br>事前に<br>解消したい。</h2>
+        <p class="jr d2">参加前によく聞かれる質問をまとめました。それでも気になることがあれば、DMで気軽に聞いてください。</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item jr d1">
+          <div class="faq-q">ひとりで参加しても大丈夫ですか？</div>
+          <div class="faq-a">もちろんです。一人参加が多数派です。知らない人と話す緊張感も、この場では体験の一部になります。友人・パートナーとのペア参加も歓迎しています。「一緒に来てみたかった」という声も多いので、誘いやすい人を誘って来てください。</div>
+        </div>
+        <div class="faq-item jr d2">
+          <div class="faq-q">緊急の連絡が必要なときはどうしますか？</div>
+          <div class="faq-a">運営の連絡先をご家族や同居人にお伝えしておけます。本当に緊急の場合は運営が間に入ってお繋ぎするので、安心してスマホを預けてください。</div>
+        </div>
+        <div class="faq-item jr d3">
+          <div class="faq-q">瞑想やヨガはやりますか？</div>
+          <div class="faq-a">いいえ。BRAIN GYMはスピリチュアルな実践はしません。座って書く、歩く、話す。それだけです。瞑想未経験者でも構えずに来られる場所です。</div>
+        </div>
+        <div class="faq-item jr d4">
+          <div class="faq-q">人見知りでも大丈夫ですか？</div>
+          <div class="faq-a">話したくない時は話さなくていい場です。沈黙が許される空間なので、人見知りの方ほど居心地が良いと感じる傾向があります。</div>
+        </div>
+        <div class="faq-item jr d5">
+          <div class="faq-q">怪しいセミナーや勧誘ではないですよね？</div>
+          <div class="faq-a">違います。物販・宗教勧誘・追加料金は一切ありません。気に入らなければ次に来なくていい、それだけのシンプルな場です。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="s-cta" id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-ov"></div>
+  <div class="cta-body">
+    <div class="sl jr" style="color:var(--ember3)">APPLY — 参加する</div>
+    <h2 class="jr d1">月に一度だけ、<br>全部<em>置いてみる。</em></h2>
+    <span class="cta-en jr d2">It won't ruin your life. It might change it.</span>
+    <div class="cta-note jr d3">
+      <p><strong>¥1,500・招待制・少人数。</strong><br>コーヒー一杯分のコミットで来てください。気に入らなければ次はなくていい。まず来てみてください。</p>
+    </div>
+    <a href="#" class="btn-cta jr d4">セッションに参加する →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fl">Brain Gym</div>
+  <div class="fc">© 2025 Brain Gym · All rights reserved.</div>
+  <div class="fr">Tokyo, Japan</div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, {passive:true});
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+}, {threshold: 0.09});
+document.querySelectorAll('.jr').forEach(el => obs.observe(el));
+
+// FAQ toggle
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-q').addEventListener('click', () => {
+    item.classList.toggle('open');
+  });
+});
+</script>
+</body>
+</html>
